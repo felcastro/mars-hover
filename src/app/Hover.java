@@ -1,16 +1,19 @@
 package app;
 
 public class Hover {
-	private static final int N = 0;
-	private static final int S = 1;
-	private static final int E = 2;
-	private static final int W = 3;
+	public static final int N = 0;
+	public static final int S = 2;
+	public static final int E = 1;
+	public static final int W = 3;
 	
     private int x, y;
     private int compass;
     private Plateau plateau;
 	
 	public Hover(int x, int y, int compass, Plateau plateau){
+		if(x > plateau.getWidth() || x < 0 || y > plateau.getHeight() || y < 0){
+			throw new IllegalArgumentException("Can't spawn outside of plateau!");
+		}
 		this.x = x;
 		this.y = y;
 		this.compass = compass;
@@ -23,6 +26,10 @@ public class Hover {
 	
 	public int getY(){
 		return y;
+	}
+	
+	public int getCompass(){
+		return compass;
 	}
 	
 	public void commandHover(String command){
@@ -49,25 +56,41 @@ public class Hover {
 
 	private void forward() {
 		switch(compass){
-		case 'N':
-			this.y++;
+		case N:
+			if(y + 1 <= plateau.getHeight()){
+				this.y++;
+			}else {
+				throw new IllegalArgumentException("Can't leave plateau!");
+			}
 			break;
-		case 'S':
-			this.y--;
+		case S:
+			if(y - 1 >= 0){
+				this.y--;
+			}else {
+				throw new IllegalArgumentException("Can't leave plateau!");
+			}
 			break;
-		case 'E':
-			this.x++;
+		case E:
+			if(x + 1 <= plateau.getWidth()){
+				this.x++;
+			}else {
+				throw new IllegalArgumentException("Can't leave plateau!");
+			}
 			break;
-		case 'W':
-			this.x--;
+		case W:
+			if(x - 1 >= 0){
+				this.x--;
+			}else {
+				throw new IllegalArgumentException("Can't leave plateau!");
+			}
 			break;
 		default:
-			break;
+			throw new IllegalArgumentException("Something went wrong!");
 		}
 	}
 
 	private void right() {
-		if(compass > W){
+		if(compass == W){
 			compass = N;
 		}else {
 			compass++;
@@ -75,15 +98,37 @@ public class Hover {
 	}
 
 	private void left() {
-		if(compass < N){
+		if(compass == N){
 			compass = W;
 		}else {
 			compass--;
 		}
 	}
 	
+	private String compassToS(){
+		String str;
+		switch(compass){
+		case N:
+			str = "North";
+			break;
+		case S:
+			str = "South";
+			break;
+		case W:
+			str = "West";
+			break;
+		case E:
+			str = "East";
+			break;
+		default:
+			str = "Fail";
+			break;
+		}
+		return str;
+	}
+	
 	public String toString(){
-		String str = "X: " + x + "\nY: " + y + "\nFacing: " + compass;
+		String str = "X: " + x + " | Y: " + y + " | Facing: " + compassToS();
 		return str;
 	}
 }
