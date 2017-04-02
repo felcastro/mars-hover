@@ -69,6 +69,11 @@ public class HoverTest {
 		hover.commandHover("J");
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalCompassValue(){
+		hover = new Hover(0, 0, 6, plateau);
+	}
+	
 	@Test
 	public void hover1test() {
 		hover = new Hover(1, 2, Hover.N, plateau);

@@ -14,6 +14,9 @@ public class Hover {
 		if(x > plateau.getWidth() || x < 0 || y > plateau.getHeight() || y < 0){
 			throw new IllegalArgumentException("Can't spawn outside of plateau!");
 		}
+		if(compass < 0 || compass > 3){
+			throw new IllegalArgumentException("Invalid compass value!");
+		}
 		this.x = x;
 		this.y = y;
 		this.compass = compass;
